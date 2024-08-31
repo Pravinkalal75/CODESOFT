@@ -1,0 +1,100 @@
+class Contact:
+    def __init__(self, name, phone_number, email, address):
+        self.name = name
+        self.phone_number = phone_number
+        self.email = email
+        self.address = address
+
+    def __str__(self):
+        return f"{self.name}: {self.phone_number}, {self.email}, {self.address}"
+
+
+class ContactBook:
+    def __init__(self):
+        self.contacts = []
+
+    def add_contact(self, name, phone_number, email, address):
+        contact = Contact(name, phone_number, email, address)
+        self.contacts.append(contact)
+        print(f"Contact added: {contact}")
+
+    def view_contact_list(self):
+        print("Contact List:")
+        for i, contact in enumerate(self.contacts, start=1):
+            print(f"{i}. {contact.name}: {contact.phone_number}")
+
+    def search_contact(self, query):
+        results = [contact for contact in self.contacts if query in contact.name or query in contact.phone_number]
+        if results:
+            print("Search results:")
+            for contact in results:
+                print(contact)
+        else:
+            print("No results found.")
+
+    def update_contact(self, index, name=None, phone_number=None, email=None, address=None):
+        try:
+            contact = self.contacts[index - 1]
+            if name:
+                contact.name = name
+            if phone_number:
+                contact.phone_number = phone_number
+            if email:
+                contact.email = email
+            if address:
+                contact.address = address
+            print(f"Contact updated: {contact}")
+        except IndexError:
+            print("Invalid index.")
+
+    def delete_contact(self, index):
+        try:
+            contact = self.contacts.pop(index - 1)
+            print(f"Contact deleted: {contact}")
+        except IndexError:
+            print("Invalid index.")
+
+
+def main():
+    contact_book = ContactBook()
+
+    while True:
+        print("\nContact Book Menu:")
+        print("1. Add Contact")
+        print("2. View Contact List")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Quit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            name = input("Enter name: ")
+            phone_number = input("Enter phone number: ")
+            email = input("Enter email: ")
+            address = input("Enter address: ")
+            contact_book.add_contact(name, phone_number, email, address)
+        elif choice == "2":
+            contact_book.view_contact_list()
+        elif choice == "3":
+            query = input("Enter search query: ")
+            contact_book.search_contact(query)
+        elif choice == "4":
+            index = int(input("Enter contact index: "))
+            name = input("Enter new name (optional): ")
+            phone_number = input("Enter new phone number (optional): ")
+            email = input("Enter new email (optional): ")
+            address = input("Enter new address (optional): ")
+            contact_book.update_contact(index, name or None, phone_number or None, email or None, address or None)
+        elif choice == "5":
+            index = int(input("Enter contact index: "))
+            contact_book.delete_contact(index)
+        elif choice == "6":
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
